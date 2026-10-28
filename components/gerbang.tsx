@@ -5,13 +5,13 @@ import { useEffect, type ReactNode } from "react";
 import { useSiapDiBrowser } from "@/lib/db/store";
 import type { Peran } from "@/lib/db/types";
 import { berandaUntuk, punya, usePengguna } from "@/lib/sesi";
-import { Logo } from "./logo";
+import { LogoPenuh } from "./logo";
 
 export function Memuat() {
   return (
     <div className="grid min-h-dvh place-items-center">
       <div className="flex flex-col items-center gap-4">
-        <Logo ukuran={56} className="animate-pulse" />
+        <LogoPenuh lebar={150} preload className="animate-pulse" />
         <p className="text-sm font-semibold text-redup">Memuat data sekolah…</p>
       </div>
     </div>

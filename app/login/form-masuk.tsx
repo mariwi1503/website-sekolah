@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { GraduationCap, HeartHandshake, School, ShieldCheck, Users, type LucideIcon } from "lucide-react";
+import { GraduationCap, HeartHandshake, LoaderCircle, School, ShieldCheck, Users, type LucideIcon } from "lucide-react";
 import { Memuat } from "@/components/gerbang";
 import { LogoLengkap } from "@/components/logo";
 import { IkonBulat, Input, Isian, Kartu, Tombol, useToast, type Nada } from "@/components/ui";
@@ -25,12 +25,25 @@ export function FormMasuk() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [galat, setGalat] = useState("");
+  // id akun demo yang sedang diproses, atau "form" untuk login dengan kata sandi
+  const [memproses, setMemproses] = useState<string | null>(null);
 
   useEffect(() => {
     if (pengguna) router.replace(berandaUntuk(pengguna));
   }, [pengguna, router]);
 
   if (!siap || pengguna) return <Memuat />;
+
+  // Login masih simulasi (instan), jadi diberi jeda singkat agar status memuat terlihat
+  // seperti saat nanti memanggil server sungguhan.
+  function proses(kunci: string, aksi: () => void) {
+    if (memproses) return;
+    setMemproses(kunci);
+    setTimeout(() => {
+      aksi();
+      setMemproses(null);
+    }, 700);
+  }
 
   function masukSebagai(id: string) {
     const p = semua("pengguna").find((x) => x.id === id);
@@ -44,12 +57,15 @@ export function FormMasuk() {
 
   function kirim(e: React.FormEvent) {
     e.preventDefault();
-    const p = semua("pengguna").find((x) => x.username.toLowerCase() === username.trim().toLowerCase());
-    if (!p || p.password !== password) {
-      setGalat("Nama pengguna atau kata sandi salah.");
-      return;
-    }
-    masukSebagai(p.id);
+    setGalat("");
+    proses("form", () => {
+      const p = semua("pengguna").find((x) => x.username.toLowerCase() === username.trim().toLowerCase());
+      if (!p || p.password !== password) {
+        setGalat("Nama pengguna atau kata sandi salah.");
+        return;
+      }
+      masukSebagai(p.id);
+    });
   }
 
   return (
@@ -58,7 +74,7 @@ export function FormMasuk() {
         <LogoLengkap />
         <div>
           <h1 className="text-3xl leading-tight font-bold sm:text-4xl">
-            Administrasi sekolah yang <span className="text-coral">lebih ringan</span> untuk guru.
+            Administrasi sekolah yang <span className="text-coral">lebih ringan</span> untuk semua  
           </h1>
           <p className="mt-3 max-w-lg text-tinta-2">
             Absensi, data kelas, pengumuman, dan informasi untuk orang tua dalam satu tempat.
@@ -73,14 +89,17 @@ export function FormMasuk() {
               <button
                 key={a.id}
                 type="button"
-                onClick={() => masukSebagai(a.id)}
-                className="clay-sm flex items-center gap-3 bg-permukaan p-3 text-left transition hover:-translate-y-0.5"
+                onClick={() => proses(a.id, () => masukSebagai(a.id))}
+                disabled={memproses !== null}
+                aria-busy={memproses === a.id}
+                className="clay-sm flex items-center gap-3 bg-permukaan p-3 text-left transition hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-60"
               >
                 <IkonBulat ikon={a.ikon} nada={a.nada} ukuran="sm" />
-                <span>
+                <span className="flex-1">
                   <span className="block text-sm font-bold">{a.label}</span>
-                  <span className="block text-xs text-redup">{a.ket}</span>
+                  <span className="block text-xs text-redup">{memproses === a.id ? "Sedang masuk…" : a.ket}</span>
                 </span>
+                {memproses === a.id && <LoaderCircle size={18} className="animate-spin text-redup" aria-hidden />}
               </button>
             ))}
           </div>
@@ -93,7 +112,7 @@ export function FormMasuk() {
         <form onSubmit={kirim} className="flex flex-col gap-4">
           <Isian label="Nama pengguna" bantuan="Guru: nama.depan · Orang tua: nomor HP">
             {(id) => (
-              <Input id={id} value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" placeholder="contoh: admin" />
+              <Input id={id} value={username} disabled={memproses !== null} onChange={(e) => setUsername(e.target.value)} autoComplete="username" placeholder="contoh: admin" />
             )}
           </Isian>
           <Isian label="Kata sandi" galat={galat}>
@@ -102,6 +121,7 @@ export function FormMasuk() {
                 id={id}
                 type="password"
                 value={password}
+                disabled={memproses !== null}
                 onChange={(e) => {
                   setPassword(e.target.value);
                   setGalat("");
@@ -111,8 +131,15 @@ export function FormMasuk() {
               />
             )}
           </Isian>
-          <Tombol type="submit" className="mt-2 w-full">
-            Masuk
+          <Tombol type="submit" className="mt-2 w-full" disabled={memproses !== null} aria-busy={memproses === "form"}>
+            {memproses === "form" ? (
+              <>
+                <LoaderCircle size={18} strokeWidth={2.4} className="animate-spin" aria-hidden />
+                Memproses…
+              </>
+            ) : (
+              "Masuk"
+            )}
           </Tombol>
         </form>
         <div className="mt-6 rounded-2xl bg-krem p-4 text-xs leading-relaxed text-tinta-2">

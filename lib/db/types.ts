@@ -1,4 +1,4 @@
-// Skema data prototipe SDN 16 Sumbawa. Setiap koleksi disimpan di localStorage
+// Skema data prototipe Sekolah Azzahra. Setiap koleksi disimpan di localStorage
 // sebagai array JSON. Data harian merujuk ke `KeanggotaanKelas` (bukan langsung ke
 // siswa) supaya riwayat per tahun ajaran tetap utuh setelah kenaikan kelas.
 

@@ -16,10 +16,10 @@ const quicksand = Quicksand({
 
 export const metadata: Metadata = {
   title: {
-    default: "SDN 16 Sumbawa",
-    template: "%s · SDN 16 Sumbawa",
+    default: "Sekolah Azzahra",
+    template: "%s · Sekolah Azzahra",
   },
-  description: "Sistem informasi sekolah SD Negeri 16 Sumbawa untuk guru, orang tua, dan siswa.",
+  description: "Sistem informasi Sekolah Azzahra untuk guru, orang tua, dan siswa.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

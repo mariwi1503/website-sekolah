@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Database, RotateCcw, Save, School } from "lucide-react";
-import { Logo } from "@/components/logo";
+import { LogoPenuh } from "@/components/logo";
 import { IkonBulat, Input, Isian, JudulHalaman, Kartu, Konfirmasi, Pilihan, Tombol, useToast } from "@/components/ui";
 import { resetDataDemo, ubah, ukuranPenyimpanan, useKoleksi } from "@/lib/db/store";
 import type { Sekolah } from "@/lib/db/types";
@@ -23,11 +23,11 @@ export function IsiPengaturan() {
         {sekolah && <FormSekolah key={JSON.stringify(sekolah)} awal={sekolah} guru={guru} />}
         <div className="flex flex-col gap-5">
           <Kartu className="p-6">
-            <div className="mb-4 flex items-center gap-3">
-              <Logo ukuran={52} />
+            <div className="flex items-center gap-4">
+              <LogoPenuh lebar={96} />
               <div>
-                <p className="font-display font-bold">Logo sementara</p>
-                <p className="text-xs text-redup">Akan diganti dengan logo resmi sekolah saat tersedia.</p>
+                <p className="font-display font-bold">Logo sekolah</p>
+                <p className="text-xs text-redup">Dipakai di aplikasi, layar memuat, dan ikon tab browser.</p>
               </div>
             </div>
           </Kartu>

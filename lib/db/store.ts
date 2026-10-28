@@ -5,7 +5,7 @@ import type { Koleksi, NamaKoleksi } from "./types";
 // Lapisan akses data. Hanya file ini yang tahu bahwa penyimpanannya localStorage,
 // jadi saat pindah ke database sungguhan cukup file ini yang diganti.
 
-const PREFIX = "sdn16:";
+const PREFIX = "azzahra:";
 // Naikkan angka ini bila struktur data dummy berubah; data akan dimuat ulang.
 const VERSI_DATA = "1";
 
@@ -92,6 +92,18 @@ export function pastikanData() {
     // diabaikan: akan di-seed ulang
   }
   if (versi !== VERSI_DATA) isiDataAwal();
+  hapusDataLama();
+}
+
+// Data dari identitas sekolah sebelumnya (prefix "sdn16:") tidak dipakai lagi.
+function hapusDataLama() {
+  try {
+    Object.keys(localStorage)
+      .filter((k) => k.startsWith("sdn16:"))
+      .forEach((k) => localStorage.removeItem(k));
+  } catch {
+    // diabaikan
+  }
 }
 
 function isiDataAwal() {
