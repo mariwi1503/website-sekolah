@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/* Sistem desain: Soft UI / Neumorphism dengan sentuhan Claymorphism.
+   Palet hangat (krem, sage, coral, mustard, biru lembut, lavender). */
+
+@theme inline {
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-quicksand), var(--font-nunito), ui-sans-serif, sans-serif;
+
+  --color-krem: #f7f1ea;
+  --color-krem-tua: #ebe0d3;
+  --color-permukaan: #fffbf6;
+  --color-tinta: #2f2723;
+  --color-tinta-2: #5c514b;
+  --color-redup: #736760; /* kontras ±5:1 di atas latar krem */
+  --color-garis: #ebe1d6;
+
+  --color-sage: #6a9c8c;
+  --color-sage-tua: #4f7f70;
+  --color-sage-muda: #cfe2d9;
+  --color-sage-lembut: #e0ece6;
+
+  --color-coral: #e8846a;
+  --color-coral-tua: #d06a50;
+  --color-coral-muda: #f5cfc1;
+  --color-coral-lembut: #fadfd5;
+
+  --color-mustard: #ecb54a;
+  --color-mustard-tua: #b9852a;
+  --color-mustard-muda: #f8e0a8;
+  --color-mustard-lembut: #fbecc8;
+
+  --color-langit: #7ea3d6;
+  --color-langit-tua: #4e77ad;
+  --color-langit-muda: #cfdcf2;
+  --color-langit-lembut: #e1e9f7;
+
+  --color-lavender: #b48fd0;
+  --color-lavender-tua: #8a62aa;
+  --color-lavender-muda: #e2d1f0;
+
+  --radius-clay: 1.75rem;
+}
+
+body {
+  background: var(--color-krem);
+  color: var(--color-tinta);
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Kartu "timbul": bayangan lembut berlapis + sorotan dalam. */
+@utility clay {
+  background: var(--color-permukaan);
+  border-radius: var(--radius-clay);
+  box-shadow:
+    12px 14px 30px rgb(150 120 95 / 0.13),
+    -10px -10px 24px rgb(255 255 255 / 0.9),
+    inset 2px 2px 3px rgb(255 255 255 / 0.7),
+    inset -3px -4px 8px rgb(150 120 95 / 0.05);
+}
+
+@utility clay-sm {
+  border-radius: 1.1rem;
+  box-shadow:
+    6px 7px 16px rgb(150 120 95 / 0.14),
+    -5px -5px 12px rgb(255 255 255 / 0.85),
+    inset 1px 1px 2px rgb(255 255 255 / 0.7),
+    inset -2px -3px 5px rgb(0 0 0 / 0.05);
+}
+
+/* Bidang "cekung" untuk input dan pencarian. */
+@utility cekung {
+  background: var(--color-permukaan);
+  box-shadow:
+    inset 3px 3px 7px rgb(150 120 95 / 0.13),
+    inset -3px -3px 7px rgb(255 255 255 / 0.95);
+}
+
+@utility tombol-clay {
+  box-shadow:
+    5px 7px 14px rgb(150 100 80 / 0.22),
+    inset 2px 2px 4px rgb(255 255 255 / 0.35),
+    inset -3px -4px 6px rgb(0 0 0 / 0.1);
+}
+
+@layer base {
+  :focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-coral) 55%, transparent);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--color-coral-muda);
+  }
+}
+
+.scroll-tipis {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-garis) transparent;
+}
+
+@keyframes muncul {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.anim-muncul {
+  animation: muncul 0.22s ease-out;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
